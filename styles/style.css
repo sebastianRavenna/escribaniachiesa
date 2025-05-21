@@ -1,0 +1,178 @@
+/* Estilos globales */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+a {
+    transition: var(--transition);
+}
+
+.btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.25rem;
+    transition: var(--transition);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+section {
+    padding: 80px 0;
+}
+
+/* Hero Section */
+#hero {
+    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('../assets/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 120px 0;
+}
+
+/* Cards */
+.card {
+    transition: var(--transition);
+    border-radius: 0.5rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Servicios */
+#servicios .card-body {
+    padding: 2rem;
+}
+
+#servicios .card-body i {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* Blog preview */
+#blog-preview .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* FAQ */
+.accordion-button:not(.collapsed) {
+    background-color: #e7f1ff;
+    color: var(--primary-color);
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0, 0, 0, 0.125);
+}
+
+/* Contacto */
+#contacto .form-control {
+    padding: 0.75rem;
+}
+
+#contacto .form-control:focus {
+    box-shadow: none;
+    border-color: var(--primary-color);
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark-color);
+}
+
+footer a:hover {
+    opacity: 0.8;
+}
+
+/* Media queries */
+@media (max-width: 992px) {
+    section {
+        padding: 60px 0;
+    }
+    
+    #hero {
+        padding: 80px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    h1.display-4 {
+        font-size: 2.5rem;
+    }
+    
+    section {
+        padding: 50px 0;
+    }
+    
+    #hero {
+        padding: 60px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    h1.display-4 {
+        font-size: 2rem;
+    }
+}
+
+/* Efecto hover para enlaces del menú */
+.navbar-nav .nav-link {
+    position: relative;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 80%;
+}
+
+/* Estilos para el mapa */
+#map {
+    width: 100%;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
