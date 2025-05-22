@@ -11,6 +11,8 @@ body {
     font-family: 'Roboto', sans-serif;
     color: #333;
     line-height: 1.6;
+    /* Asegurar que no hay transforms aplicados al body */
+    transform: none !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -49,24 +51,119 @@ a {
 
 section {
     padding: 80px 0;
+    /* Asegurar que las secciones mantengan su posición */
+    position: relative;
+    z-index: 2;
+    background: white; /* Fondo sólido para evitar transparencias */
 }
 
-/* Hero Section */
+/* Hero Section - VERSIÓN COMPLETAMENTE CORREGIDA */
 #hero {
-    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('../assets/hero-bg.jpg');
+    background: url('../assets/hero.jpg') no-repeat center center;
     background-size: cover;
-    background-position: center;
-    padding: 120px 0;
+    background-attachment: fixed;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+    /* IMPORTANTE: Sin transforms, sin overflow hidden, sin margin tricks */
+    margin: 0;
+    width: 100%;
+    transform: none !important;
+}
+
+/* Overlay para mejor contraste */
+#hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%);
+    z-index: 1;
+}
+
+#hero .container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+/* Texto del hero */
+#hero .hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+#hero .hero-subtitle {
+    font-size: 1.4rem;
+    font-weight: 300;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+    opacity: 0.95;
+}
+
+#hero .hero-button {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.4);
+    border: 2px solid transparent;
+    background: linear-gradient(45deg, #0d6efd, #0b5ed7);
+    transition: all 0.4s ease;
+}
+
+#hero .hero-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(13, 110, 253, 0.6);
+    background: linear-gradient(45deg, #0b5ed7, #0a58ca);
+}
+
+/* Sección Nosotros - Asegurar posición correcta */
+#nosotros {
+    background-color: var(--dark-color);
+    margin-top: 0 !important;
+    padding-top: 80px;
+    position: relative;
+    z-index: 3;
+    transform: none !important;
+}
+
+/* Resto de secciones */
+#servicios,
+#faq,
+#blog-preview,
+#contacto {
+    position: relative;
+    z-index: 3;
+    transform: none !important;
+    margin-top: 0;
 }
 
 /* Cards */
 .card {
     transition: var(--transition);
     border-radius: 0.5rem;
+    transform: none !important; /* Resetear transforms por defecto */
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) !important; /* Solo en hover */
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
 }
 
@@ -111,40 +208,180 @@ section {
 /* Footer */
 footer {
     background-color: var(--dark-color);
+    position: relative;
+    z-index: 3;
 }
 
 footer a:hover {
     opacity: 0.8;
 }
 
+/* Animaciones - SIN INTERFERIR CON EL LAYOUT */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Clases de animación para el hero */
+.hero-title {
+    animation: fadeInDown 1.2s ease-out 0.3s both;
+}
+
+.hero-subtitle {
+    animation: fadeInScale 1.2s ease-out 0.8s both;
+}
+
+.hero-button {
+    animation: slideInFromBottom 1.2s ease-out 1.3s both;
+}
+
 /* Media queries */
+@media (max-width: 1200px) {
+    #hero .hero-title {
+        font-size: 3.5rem;
+    }
+    
+    #hero .hero-subtitle {
+        font-size: 1.3rem;
+    }
+}
+
 @media (max-width: 992px) {
     section {
         padding: 60px 0;
     }
     
     #hero {
-        padding: 80px 0;
+        min-height: 90vh;
+        background-attachment: scroll;
+    }
+    
+    #hero .hero-title {
+        font-size: 3rem;
+    }
+    
+    #hero .hero-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+    }
+    
+    #hero .hero-button {
+        padding: 0.9rem 2rem;
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 768px) {
-    h1.display-4 {
-        font-size: 2.5rem;
-    }
-    
     section {
         padding: 50px 0;
     }
     
     #hero {
-        padding: 60px 0;
+        min-height: 85vh;
+        background-attachment: scroll;
+    }
+    
+    #hero .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    #hero .hero-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        padding: 0 1rem;
+    }
+    
+    #hero .hero-button {
+        padding: 0.8rem 1.8rem;
+        font-size: 0.95rem;
+    }
+    
+    /* Ajustar animaciones en móvil */
+    .hero-title {
+        animation-duration: 1s;
+        animation-delay: 0.2s;
+    }
+    
+    .hero-subtitle {
+        animation-duration: 1s;
+        animation-delay: 0.6s;
+    }
+    
+    .hero-button {
+        animation-duration: 1s;
+        animation-delay: 1s;
     }
 }
 
 @media (max-width: 576px) {
-    h1.display-4 {
+    #hero {
+        min-height: 80vh;
+    }
+    
+    #hero .hero-title {
         font-size: 2rem;
+        line-height: 1.2;
+    }
+    
+    #hero .hero-subtitle {
+        font-size: 1rem;
+        padding: 0 0.5rem;
+    }
+    
+    #hero .hero-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Dispositivos muy pequeños */
+@media (max-width: 400px) {
+    #hero .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    #hero .hero-subtitle {
+        font-size: 0.95rem;
     }
 }
 
@@ -175,4 +412,39 @@ footer a:hover {
     width: 100%;
     border-radius: 0.5rem;
     overflow: hidden;
+}
+
+/* Animación adicional CONTROLADA para elementos que aparecen al hacer scroll */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.fade-in.animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* IMPORTANTE: Resetear cualquier transform problemático */
+* {
+    transform: none;
+}
+
+/* Permitir solo transforms específicos */
+.card:hover,
+.btn:hover,
+.hero-button:hover,
+.fade-in.animated {
+    /* Estos elementos SÍ pueden tener transform */
+}
+
+/* Asegurar que los containers principales no tengan transforms */
+.container,
+.container-fluid,
+section,
+main,
+body,
+html {
+    transform: none !important;
 }

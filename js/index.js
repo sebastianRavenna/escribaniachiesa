@@ -12,7 +12,72 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Activar la navegación activa
     initActiveNav();
+    
+    // Inicializar efectos del hero
+    initHeroEffects();
+    
+    // Ajustar el hero para pantallas pequeñas
+    handleHeroResponsive();
 });
+
+// Función para inicializar efectos del hero
+function initHeroEffects() {
+    const heroSection = document.getElementById('hero');
+    
+    if (heroSection) {
+        
+        // Agregar clase para activar animaciones después de un breve delay
+        setTimeout(() => {
+            heroSection.classList.add('loaded');
+        }, 100);
+        // Efecto fade out suave al hacer scroll (opcional)
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const heroHeight = heroSection.offsetHeight;
+            
+            if (scrolled < heroHeight) {
+                const opacity = Math.max(0.3, 1 - (scrolled / heroHeight));
+                heroSection.style.opacity = opacity;
+            }
+        });
+    }
+}
+
+// Función para manejar la responsividad del hero
+function handleHeroResponsive() {
+    const heroSection = document.getElementById('hero');
+    
+    if (heroSection) {
+        function adjustHeroHeight() {
+            const windowWidth = window.innerWidth;
+            
+            // Ajustar altura mínima según el dispositivo
+            if (windowWidth <= 576) {
+                heroSection.style.minHeight = '80vh';
+            } else if (windowWidth <= 768) {
+                heroSection.style.minHeight = '85vh';
+            } else if (windowWidth <= 992) {
+                heroSection.style.minHeight = '90vh';
+            } else {
+                heroSection.style.minHeight = '100vh';
+            }
+            
+            // Deshabilitar parallax en dispositivos móviles para mejor rendimiento
+            if (windowWidth <= 768) {
+                heroSection.style.backgroundAttachment = 'scroll';
+            } else {
+                heroSection.style.backgroundAttachment = 'fixed';
+            }
+            
+            // IMPORTANTE: Resetear cualquier transform que pueda estar aplicado
+            heroSection.style.transform = 'none';
+        }
+        
+        // Ejecutar al cargar y al cambiar el tamaño de la ventana
+        adjustHeroHeight();
+        window.addEventListener('resize', adjustHeroHeight);
+    }
+}
 
 // Función para inicializar el formulario de contacto
 function initContactForm() {
@@ -29,8 +94,18 @@ function initContactForm() {
             const asunto = document.getElementById('asunto').value;
             const mensaje = document.getElementById('mensaje').value;
             
-            // Aquí normalmente enviarías los datos a un servidor
-            // En este ejemplo, simularemos un envío exitoso
+            // Validación básica mejorada
+            if (!nombre.trim() || !email.trim() || !asunto.trim() || !mensaje.trim()) {
+                showAlert('Por favor, completa todos los campos obligatorios.', 'warning');
+                return;
+            }
+            
+            // Validar email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showAlert('Por favor, ingresa un email válido.', 'warning');
+                return;
+            }
             
             // Mostrar mensaje de carga
             const submitButton = contactForm.querySelector('button[type="submit"]');
@@ -40,17 +115,8 @@ function initContactForm() {
             
             // Simular tiempo de procesamiento
             setTimeout(function() {
-                // Crear un mensaje de éxito
-                const successMessage = document.createElement('div');
-                successMessage.className = 'alert alert-success mt-3';
-                successMessage.role = 'alert';
-                successMessage.innerHTML = `
-                    <h4 class="alert-heading">¡Mensaje enviado!</h4>
-                    <p>Gracias por contactarnos, ${nombre}. Nos pondremos en contacto contigo a la brevedad.</p>
-                `;
-                
-                // Insertar el mensaje después del formulario
-                contactForm.appendChild(successMessage);
+                // Mostrar mensaje de éxito
+                showAlert(`¡Mensaje enviado exitosamente! Gracias ${nombre}, nos pondremos en contacto contigo pronto.`, 'success');
                 
                 // Restaurar el botón
                 submitButton.innerHTML = originalText;
@@ -59,17 +125,41 @@ function initContactForm() {
                 // Resetear el formulario
                 contactForm.reset();
                 
-                // Desaparecer el mensaje después de 5 segundos
-                setTimeout(function() {
-                    successMessage.remove();
-                }, 5000);
-                
-                // En un caso real, aquí enviarías los datos al servidor con fetch() o XMLHttpRequest
+                // En un caso real, aquí enviarías los datos al servidor
                 console.log('Formulario enviado:', { nombre, email, telefono, asunto, mensaje });
                 
             }, 1500);
         });
     }
+}
+
+// Función para mostrar alertas mejoradas
+function showAlert(message, type = 'info') {
+    // Crear el elemento de alerta
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = `
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        max-width: 400px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    `;
+    
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+    
+    // Agregar al body
+    document.body.appendChild(alertDiv);
+    
+    // Auto-eliminar después de 5 segundos
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 5000);
 }
 
 // Función para inicializar el desplazamiento suave
@@ -82,22 +172,32 @@ function initSmoothScroll() {
             // Obtener el destino
             const targetId = this.getAttribute('href');
             
-            // Si el destino es "#", no hacer nada (podría ser un botón de colapso)
+            // Si el destino es "#", no hacer nada
             if (targetId === '#') return;
             
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                // Desplazamiento suave
+                // Calcular offset dinámicamente basado en la navbar
+                const navbar = document.querySelector('.navbar');
+                const offset = navbar ? navbar.offsetHeight + 20 : 80;
+                
+                // Desplazamiento suave mejorado
+                const targetPosition = targetElement.offsetTop - offset;
+                
                 window.scrollTo({
-                    top: targetElement.offsetTop - 80, // Ajustar para el header fijo
+                    top: targetPosition,
                     behavior: 'smooth'
                 });
                 
-                // Si estamos en móvil y el menú está abierto, cerrarlo
+                // Cerrar menú móvil si está abierto
                 const navbarCollapse = document.querySelector('.navbar-collapse');
+                const navbarToggler = document.querySelector('.navbar-toggler');
+                
                 if (navbarCollapse && navbarCollapse.classList.contains('show')) {
-                    navbarCollapse.classList.remove('show');
+                    if (navbarToggler) {
+                        navbarToggler.click();
+                    }
                 }
             }
         });
@@ -106,7 +206,6 @@ function initSmoothScroll() {
 
 // Función para inicializar tooltips de Bootstrap
 function initTooltips() {
-    // Activar todos los tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function(tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
@@ -115,25 +214,31 @@ function initTooltips() {
 
 // Función para activar la navegación actual
 function initActiveNav() {
-    // Obtener la ubicación actual
     const currentLocation = window.location.pathname;
-    
-    // Obtener todos los enlaces de navegación
     const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
     
-    // Si estamos en la página principal
     if (currentLocation.endsWith('/') || currentLocation.endsWith('index.html')) {
-        // Agregar detector de scroll para actualizar enlaces activos según la sección visible
-        window.addEventListener('scroll', highlightNavOnScroll);
+        // Detector de scroll mejorado con throttle para mejor rendimiento
+        let ticking = false;
         
-        // Llamar una vez al cargar para establecer el enlace activo inicial
+        function updateActiveNav() {
+            highlightNavOnScroll();
+            ticking = false;
+        }
+        
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                requestAnimationFrame(updateActiveNav);
+                ticking = true;
+            }
+        });
+        
+        // Establecer enlace activo inicial
         highlightNavOnScroll();
     } else {
-        // Para otras páginas, marcar el enlace correspondiente como activo
+        // Para otras páginas
         navLinks.forEach(link => {
             const linkPath = link.getAttribute('href');
-            
-            // Si el enlace contiene la ruta actual, marcarlo como activo
             if (linkPath && currentLocation.includes(linkPath)) {
                 link.classList.add('active');
             }
@@ -143,19 +248,16 @@ function initActiveNav() {
 
 // Función para resaltar la navegación según el scroll
 function highlightNavOnScroll() {
-    // Obtener la posición actual del scroll
     const scrollPosition = window.scrollY;
-    
-    // Obtener todas las secciones
     const sections = document.querySelectorAll('section[id]');
+    const navbar = document.querySelector('.navbar');
+    const navbarHeight = navbar ? navbar.offsetHeight : 80;
     
-    // Recorrer las secciones para encontrar la que está actualmente visible
     sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100; // Ajuste para el header
+        const sectionTop = section.offsetTop - navbarHeight - 50;
         const sectionHeight = section.offsetHeight;
         const sectionId = section.getAttribute('id');
         
-        // Si la posición de scroll está dentro de esta sección
         if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
             // Remover 'active' de todos los enlaces
             document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
@@ -175,11 +277,12 @@ function highlightNavOnScroll() {
 if (document.querySelector('.carousel')) {
     new bootstrap.Carousel(document.querySelector('.carousel'), {
         interval: 5000,
-        touch: true
+        touch: true,
+        wrap: true
     });
 }
 
-// Animación para los números en la sección de estadísticas (si existe)
+// Animación para los números en la sección de estadísticas
 function animateStats() {
     const statsElements = document.querySelectorAll('.stats-number');
     
@@ -187,7 +290,7 @@ function animateStats() {
         statsElements.forEach(element => {
             const targetValue = parseInt(element.getAttribute('data-value'));
             let currentValue = 0;
-            const duration = 2000; // 2 segundos
+            const duration = 2000;
             const frameRate = 60;
             const totalFrames = duration / 1000 * frameRate;
             const increment = targetValue / totalFrames;
@@ -205,33 +308,69 @@ function animateStats() {
     }
 }
 
-// Observador de intersección para activar las animaciones cuando los elementos son visibles
+// Observador de intersección mejorado
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            // Si el elemento tiene la clase 'stats-container', iniciar la animación de estadísticas
+            // Animación de estadísticas
             if (entry.target.classList.contains('stats-container')) {
                 animateStats();
             }
             
-            // Agregar clase para animación de fade-in
-            entry.target.classList.add('animated');
+            // Animación de fade-in
+            if (entry.target.classList.contains('fade-in')) {
+                entry.target.classList.add('animated');
+            }
+            
+            // Animación de cards
+            if (entry.target.classList.contains('card')) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
             
             // Dejar de observar después de la animación
             observer.unobserve(entry.target);
         }
     });
-}, {
-    threshold: 0.2
+}, observerOptions);
+
+// Observar elementos cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    // Observar elementos con animaciones
+    document.querySelectorAll('.fade-in, .stats-container').forEach(element => {
+        observer.observe(element);
+    });
+    
+    // Preparar cards para animación
+    document.querySelectorAll('.card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'all 0.6s ease';
+        observer.observe(card);
+    });
 });
 
-// Observar elementos con la clase 'fade-in'
-document.querySelectorAll('.fade-in').forEach(element => {
-    observer.observe(element);
-});
-
-// Observar el contenedor de estadísticas si existe
-const statsContainer = document.querySelector('.stats-container');
-if (statsContainer) {
-    observer.observe(statsContainer);
+// Optimización para dispositivos táctiles
+if ('ontouchstart' in window) {
+    document.body.classList.add('touch-device');
 }
+
+// Precargar la imagen del hero para mejor rendimiento
+function preloadHeroImage() {
+    const heroSection = document.getElementById('hero');
+    if (heroSection) {
+        const img = new Image();
+        img.src = 'assets/hero.jpg';
+        img.onload = function() {
+            heroSection.classList.add('hero-loaded');
+        };
+    }
+}
+
+// Ejecutar precarga
+preloadHeroImage();
