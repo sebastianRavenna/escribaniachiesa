@@ -61,16 +61,16 @@
                         poster="assets/oficina.jpg">
                         Tu navegador no soporta el elemento video.
                     </video>
-                    <!--<img src="assets/oficina.jpg" alt="Oficina de la escribanía" class="img-fluid rounded shadow">
-                </div>-->
+                </div>
             </div>
             
             <div class="row mt-5">
-            <h3 class="text-center mb-5">Nuestro Equipo</h3>
+                <h3 class="text-center mb-5">Nuestro Equipo</h3>
+                
                 <!-- Miembro 1 -->
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 border-0 shadow-sm">
-                        <img src="assets/delfinaChiesa.jpg" class="card-img-top" alt="Foto de la Escribana Delfina Chiesa">
+                        <img src="assets/delfinaChiesa.jpg" class="team-media" alt="Foto de la Escribana Delfina Chiesa">
                         <div class="card-body text-center">
                             <h4 class="card-title">Dra. Delfina Chiesa</h4>
                             <p class="card-text text-muted">Escribana Titular</p>
@@ -82,7 +82,7 @@
                 <!-- Miembro 2 -->
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 border-0 shadow-sm">
-                        <img src="assets/horacioChiesa.jpg" class="card-img-top" alt="Foto del Escribano Horacio Chiesa">
+                        <img src="assets/horacioChiesa.jpg" class="team-media" alt="Foto del Escribano Horacio Chiesa">
                         <div class="card-body text-center">
                             <h4 class="card-title">Dr. Horacio Chiesa</h4>
                             <p class="card-text text-muted">Escribano Asociado</p>
@@ -91,10 +91,94 @@
                     </div>
                 </div>
                 
-                <!-- Miembro 3 -->
+                <!-- Miembro 3 - Video con hover -->
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 border-0 shadow-sm">
-                        <img src="assets/licChiesa.jpg" class="card-img-top" alt="Foto de la Asistente Chiesa">
+                        <div class="video-container">
+                            <video 
+                                src="assets/licChiesa.mp4" 
+                                class="team-video hover-video"
+                                data-member="3"
+                                loop 
+                                muted
+                                playsinline
+                                preload="metadata"
+                                style="object-position: center">    
+                                Tu navegador no soporta el elemento video.
+                                
+                            </video>
+                        </div>
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Lic. Chiesa</h4>
+                            <p class="card-text text-muted">Asistente Legal</p>
+                            <p class="card-text">Graduada en Derecho con especialización en Gestión Notarial.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Miembro 4 - Video automático -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="video-container">
+                            <video 
+                                src="assets/chiesaMujer.mp4" 
+                                class="team-video auto-video"
+                                data-member="4"
+                                autoplay
+                                loop 
+                                muted
+                                playsinline
+                                preload="metadata">
+                                Tu navegador no soporta el elemento video.
+                            </video>
+                        </div>
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Dra. Delfina Chiesa</h4>
+                            <p class="card-text text-muted">Escribana Titular</p>
+                            <p class="card-text">Especialista en Derecho Notarial con más de 20 años de experiencia.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Miembro 5 - Video con hover -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="video-container">
+                            <video 
+                                src="assets/chiesaHombre1.mp4" 
+                                class="team-video hover-video"
+                                data-member="5"
+                                loop 
+                                muted
+                                playsinline
+                                preload="metadata">
+                                Tu navegador no soporta el elemento video.
+                            </video>
+                        </div>
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Dr. Horacio Chiesa</h4>
+                            <p class="card-text text-muted">Escribano Asociado</p>
+                            <p class="card-text">Especializado en Derecho Inmobiliario y Societario.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Miembro 6 - Video automático -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="video-container">
+                            <video 
+                                src="assets/chiesaHombre2.mp4" 
+                                class="team-video auto-video"
+                                data-member="6"
+                                autoplay
+                                loop 
+                                muted
+                                playsinline
+                                preload="metadata">
+                                Tu navegador no soporta el elemento video.
+                            </video>
+                        </div>
                         <div class="card-body text-center">
                             <h4 class="card-title">Lic. Chiesa</h4>
                             <p class="card-text text-muted">Asistente Legal</p>

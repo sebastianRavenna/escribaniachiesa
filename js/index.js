@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Ajustar el hero para pantallas pequeñas
     handleHeroResponsive();
+    
+    // Inicializar videos del equipo
+    initTeamVideos();
 });
 
 // Función para inicializar efectos del hero
@@ -77,6 +80,105 @@ function handleHeroResponsive() {
         adjustHeroHeight();
         window.addEventListener('resize', adjustHeroHeight);
     }
+}
+
+// Función para inicializar todos los videos del equipo
+function initTeamVideos() {
+    // Detectar si es un dispositivo táctil
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    // Inicializar videos con hover (miembros 3 y 5)
+    initHoverVideos(isTouchDevice);
+    
+    // Inicializar videos automáticos (miembros 4 y 6)
+    initAutoVideos();
+}
+
+// Función para inicializar videos con hover/touch
+function initHoverVideos(isTouchDevice) {
+    const hoverVideos = document.querySelectorAll('.hover-video');
+    
+    hoverVideos.forEach(video => {
+        // Quitar autoplay si existe
+        video.removeAttribute('autoplay');
+        
+        // Crear un contenedor wrapper si no existe
+        if (!video.closest('.video-container')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'video-container';
+            video.parentNode.insertBefore(wrapper, video);
+            wrapper.appendChild(video);
+        }
+        
+        const videoContainer = video.closest('.video-container') || video;
+        
+        if (isTouchDevice) {
+            // Para dispositivos táctiles (tablets/celulares)
+            let isPlaying = false;
+            
+            const toggleVideo = function(e) {
+                e.preventDefault();
+                
+                if (!isPlaying) {
+                    video.play().then(() => {
+                        isPlaying = true;
+                    }).catch(error => {
+                        console.log('Error al reproducir video:', error);
+                    });
+                } else {
+                    video.pause();
+                    video.currentTime = 0;
+                    isPlaying = false;
+                }
+            };
+            
+            videoContainer.addEventListener('touchstart', toggleVideo);
+            videoContainer.addEventListener('click', toggleVideo);
+            
+            // Manejar cuando el video termina
+            video.addEventListener('ended', function() {
+                isPlaying = false;
+            });
+            
+        } else {
+            // Para dispositivos con mouse (desktop)
+            videoContainer.addEventListener('mouseenter', function() {
+                video.play().catch(error => {
+                    console.log('Error al reproducir video:', error);
+                });
+            });
+            
+            videoContainer.addEventListener('mouseleave', function() {
+                video.pause();
+                video.currentTime = 0;
+            });
+        }
+    });
+}
+
+// Función para inicializar videos automáticos
+function initAutoVideos() {
+    const autoVideos = document.querySelectorAll('.auto-video');
+    
+    autoVideos.forEach(video => {
+        // Asegurar que tienen autoplay, loop y muted
+        video.setAttribute('autoplay', '');
+        video.setAttribute('loop', '');
+        video.setAttribute('muted', '');
+        video.setAttribute('playsinline', '');
+        
+        // Intentar reproducir inmediatamente
+        video.play().catch(error => {
+            console.log('Error al reproducir video automático:', error);
+        });
+        
+        // Manejar cuando el video está listo para reproducir
+        video.addEventListener('canplay', function() {
+            video.play().catch(error => {
+                console.log('Error al reproducir video cuando está listo:', error);
+            });
+        });
+    });
 }
 
 // Función para inicializar el formulario de contacto
