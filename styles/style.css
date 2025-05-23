@@ -1,82 +1,162 @@
-/* Estilos globales */
+/* ========== IMPORTS ========== */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+/* ========== VARIABLES CSS ========== */
 :root {
     --primary-color: #0d6efd;
+    --primary-hover: #0b5ed7;
+    --primary-active: #0a58ca;
     --secondary-color: #6c757d;
     --light-color: #f8f9fa;
     --dark-color: #212529;
-    --transition: all 0.3s ease;
+    --white: #ffffff;
+    --black: #000000;
+    
+    /* Spacing */
+    --section-padding: 80px;
+    --card-padding: 2rem;
+    --border-radius: 0.5rem;
+    --border-radius-sm: 0.25rem;
+    --border-radius-lg: 50px;
+    
+    /* Transitions */
+    --transition-fast: all 0.2s ease;
+    --transition-normal: all 0.3s ease;
+    --transition-slow: all 0.6s ease;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
+    --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== RESET Y BASE ========== */
+* {
+    box-sizing: border-box;
+}
+
+body, main, section, .container, .container-fluid {
+    transform: none !important;
 }
 
 body {
     font-family: 'Roboto', sans-serif;
     color: #333;
     line-height: 1.6;
-    /* Asegurar que no hay transforms aplicados al body */
-    transform: none !important;
+    margin: 0;
+    padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
+    margin-bottom: 1rem;
 }
 
 a {
-    transition: var(--transition);
+    text-decoration: none;
+    transition: var(--transition-normal);
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ========== COMPONENTES GLOBALES ========== */
+
+/* Botones */
 .btn {
     padding: 0.5rem 1.5rem;
-    border-radius: 0.25rem;
-    transition: var(--transition);
+    border-radius: var(--border-radius-sm);
+    transition: var(--transition-normal);
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
 }
 
 .btn-primary {
     background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    color: var(--white);
+    border: 2px solid var(--primary-color);
 }
 
 .btn-primary:hover {
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
 
 .btn-outline-primary {
     color: var(--primary-color);
-    border-color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    background: transparent;
 }
 
 .btn-outline-primary:hover {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--white);
+    transform: translateY(-2px);
 }
 
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-normal);
+    background: var(--white);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.card-body {
+    padding: var(--card-padding);
+}
+
+/* Secciones */
 section {
-    padding: 80px 0;
-    /* Asegurar que las secciones mantengan su posición */
+    padding: var(--section-padding) 0;
     position: relative;
-    z-index: 2;
-    background: white; /* Fondo sólido para evitar transparencias */
 }
 
-/* Hero Section - VERSIÓN COMPLETAMENTE CORREGIDA */
+.bg-light {
+    background-color: var(--light-color) !important;
+}
+
+.bg-dark {
+    background-color: var(--dark-color) !important;
+    color: var(--white);
+}
+
+/* ========== HERO SECTION ========== */
 #hero {
     background: url('../assets/hero.jpg') no-repeat center center;
     background-size: cover;
     background-attachment: fixed;
-    padding: 0;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--white);
     position: relative;
-    z-index: 1;
-    /* IMPORTANTE: Sin transforms, sin overflow hidden, sin margin tricks */
+    padding: 0;
     margin: 0;
-    width: 100%;
-    transform: none !important;
 }
 
-/* Overlay para mejor contraste */
 #hero::before {
     content: '';
     position: absolute;
@@ -94,86 +174,66 @@ section {
     text-align: center;
 }
 
-/* Texto del hero */
-#hero .hero-title {
+.hero-title {
     font-size: 4rem;
-    font-weight: 800;
+    font-weight: 900;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
     margin-bottom: 1.5rem;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    animation: slideDown 1.2s ease-out 0.3s both;
 }
 
-#hero .hero-subtitle {
+.hero-subtitle {
     font-size: 1.4rem;
     font-weight: 300;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
     max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto 2rem;
     line-height: 1.5;
     opacity: 0.95;
+    animation: fadeIn 1.2s ease-out 0.8s both;
 }
 
-#hero .hero-button {
+.hero-button {
     font-size: 1.1rem;
     font-weight: 600;
     padding: 1rem 2.5rem;
-    border-radius: 50px;
+    border-radius: var(--border-radius-lg);
     text-transform: uppercase;
     letter-spacing: 1px;
     box-shadow: 0 8px 20px rgba(13, 110, 253, 0.4);
-    border: 2px solid transparent;
-    background: linear-gradient(45deg, #0d6efd, #0b5ed7);
-    transition: all 0.4s ease;
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
+    animation: slideUp 1.2s ease-out 1.3s both;
 }
 
-#hero .hero-button:hover {
+.hero-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 30px rgba(13, 110, 253, 0.6);
-    background: linear-gradient(45deg, #0b5ed7, #0a58ca);
+    background: linear-gradient(45deg, var(--primary-hover), var(--primary-active));
 }
 
-/* Sección Nosotros - Asegurar posición correcta */
+/* ========== SECCIÓN NOSOTROS ========== */
 #nosotros {
+    background-color: var(--light-color);
+    padding-top: var(--section-padding);
+}
+
+#nosotros .container {
     background-color: var(--dark-color);
-    margin-top: 0 !important;
-    padding-top: 80px;
-    position: relative;
-    z-index: 3;
-    transform: none !important;
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    color: var(--white);
 }
 
-/* Resto de secciones */
-#servicios,
-#faq,
-#blog-preview,
-#contacto {
-    position: relative;
-    z-index: 3;
-    transform: none !important;
-    margin-top: 0;
-}
-
-/* Cards */
-.card {
-    transition: var(--transition);
-    border-radius: 0.5rem;
-    transform: none !important; /* Resetear transforms por defecto */
-}
-
-.card:hover {
-    transform: translateY(-5px) !important; /* Solo en hover */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* ESTILOS PARA LA SECCIÓN DEL EQUIPO */
-.team-media {
+/* ========== EQUIPO ========== */
+.team-image {
     width: 100%;
     height: 300px;
     object-fit: cover;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
 }
 
 .video-container {
@@ -181,32 +241,30 @@ section {
     width: 100%;
     height: 300px;
     overflow: hidden;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-    background-color: #f8f9fa;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    background-color: var(--light-color);
 }
 
 .team-video {
     position: absolute;
-    top: 0; /* Alineación superior */
+    top: 0;
     left: 50%;
-    transform: translateX(-50%); /* Centrar horizontalmente */
+    transform: translateX(-50%);
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Mantener proporción y cubrir el contenedor */
-    object-position: top; /* Posicionar desde la parte superior */
-    border-radius: 0.375rem;
-    transition: all 0.3s ease;
+    object-fit: cover;
+    object-position: top;
+    transition: var(--transition-normal);
     cursor: pointer;
 }
 
-/* Efectos hover para videos interactivos */
-.hover-video:hover {
-    transform: translateX(-50%) scale(1.02);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+.team-video:hover {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: var(--shadow-lg);
 }
 
-/* Indicador visual para videos con hover */
+/* Indicador de video interactivo */
 .video-container::before {
     content: '';
     position: absolute;
@@ -218,7 +276,7 @@ section {
     border-radius: 50%;
     z-index: 2;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: var(--transition-normal);
 }
 
 .video-container::after {
@@ -226,183 +284,32 @@ section {
     position: absolute;
     top: 15px;
     right: 18px;
-    color: white;
+    color: var(--white);
     font-size: 12px;
     z-index: 3;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: var(--transition-normal);
 }
 
-/* Mostrar indicador solo en videos con hover */
 .video-container:has(.hover-video):hover::before,
 .video-container:has(.hover-video):hover::after {
     opacity: 1;
 }
 
-/* Estilos para dispositivos táctiles */
-.touch-device .video-container::before,
-.touch-device .video-container::after {
-    opacity: 1; /* Mostrar siempre en dispositivos táctiles */
-}
-
-/* Prevenir selección de texto en videos */
-.team-video {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none;
-}
-
-/* ========== RESPONSIVE DESIGN ========== */
-
-/* Tablets (768px y más) */
-@media (min-width: 768px) {
-    .video-container {
-        height: 280px;
-    }
-    
-    .team-media {
-        height: 280px;
-    }
-}
-
-/* Desktop pequeño (992px y más) */
-@media (min-width: 992px) {
-    .video-container {
-        height: 300px;
-    }
-    
-    .team-media {
-        height: 300px;
-    }
-    
-    /* Efectos más sutiles en desktop */
-    .hover-video:hover {
-        transform: translateX(-50%) scale(1.05);
-    }
-}
-
-/* Desktop grande (1200px y más) */
-@media (min-width: 1200px) {
-    .video-container {
-        height: 320px;
-    }
-    
-    .team-media {
-        height: 320px;
-    }
-}
-
-/* Dispositivos móviles muy pequeños */
-@media (max-width: 576px) {
-    .video-container {
-        height: 220px;
-    }
-    
-    .team-media {
-        height: 220px;
-    }
-    
-    /* Desactivar efectos hover en móviles */
-    .hover-video:hover {
-        transform: translateX(-50%);
-        box-shadow: none;
-    }
-}
-
-/* ========== OPTIMIZACIONES DE RENDIMIENTO ========== */
-
-/* Optimización para videos en dispositivos móviles */
-@media (max-width: 768px) {
-    .team-video {
-        -webkit-transform: translateX(-50%);
-        transform: translateX(-50%);
-        will-change: auto; /* Evitar aceleración hardware innecesaria */
-    }
-}
-
-/* Optimización para desktop */
-@media (min-width: 769px) {
-    .team-video {
-        will-change: transform; /* Preparar para animaciones */
-    }
-}
-
-/* Evitar problemas de rendering en algunos navegadores */
-.video-container,
-.team-video {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-perspective: 1000;
-    perspective: 1000;
-}
-
-/* ========== ACCESIBILIDAD ========== */
-
-/* Respetar preferencias de movimiento reducido */
-@media (prefers-reduced-motion: reduce) {
-    .team-video,
-    .video-container::before,
-    .video-container::after {
-        transition: none !important;
-    }
-    
-    .hover-video:hover {
-        transform: translateX(-50%) !important;
-    }
-}
-
-/* Foco para accesibilidad con teclado */
-.video-container:focus-within {
-    outline: 2px solid #007bff;
-    outline-offset: 2px;
-}
-
-/* Estados de carga */
-.video-container.loading {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-    0% {
-        background-position: 200% 0;
-    }
-    100% {
-        background-position: -200% 0;
-    }
-}
-
-/* Estilos específicos para las tarjetas del equipo */
-#nosotros .card {
-    background-color: white;
-    color: var(--dark-color);
-}
-
-#nosotros .card-img-top {
-    height: 300px;
-    object-fit: cover;
-}
-
-/* Servicios */
-#servicios .card-body {
-    padding: 2rem;
-}
-
-#servicios .card-body i {
+/* ========== SERVICIOS ========== */
+.service-icon {
     color: var(--primary-color);
     margin-bottom: 1rem;
+    font-size: 3rem;
 }
 
-/* Blog preview */
-#blog-preview .card-img-top {
+/* ========== BLOG ========== */
+.article-image {
     height: 200px;
     object-fit: cover;
 }
 
-/* FAQ */
+/* ========== FAQ ========== */
 .accordion-button:not(.collapsed) {
     background-color: #e7f1ff;
     color: var(--primary-color);
@@ -414,32 +321,56 @@ section {
     border-color: rgba(0, 0, 0, 0.125);
 }
 
-/* Contacto */
-#contacto .form-control {
+.accordion-item {
+    border: none;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+/* ========== CONTACTO ========== */
+.form-control {
     padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius-sm);
+    transition: var(--transition-fast);
 }
 
-#contacto .form-control:focus {
-    box-shadow: none;
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
     border-color: var(--primary-color);
+    outline: none;
 }
 
-/* Footer */
-footer {
-    background-color: var(--dark-color);
+/* ========== NAVEGACIÓN ========== */
+.navbar-nav .nav-link {
     position: relative;
-    z-index: 3;
+    padding: 0.5rem 1rem;
+    transition: var(--transition-normal);
 }
 
-footer a:hover {
-    opacity: 0.8;
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: var(--transition-normal);
+    transform: translateX(-50%);
 }
 
-/* Animaciones - SIN INTERFERIR CON EL LAYOUT */
-@keyframes fadeInUp {
+.navbar-nav .nav-link:hover::after {
+    width: 80%;
+}
+
+/* ========== ANIMACIONES ========== */
+@keyframes slideDown {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(-50px);
     }
     to {
         opacity: 1;
@@ -447,29 +378,7 @@ footer a:hover {
     }
 }
 
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: translateY(40px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes slideInFromBottom {
+@keyframes slideUp {
     from {
         opacity: 0;
         transform: translateY(50px) scale(0.9);
@@ -480,33 +389,42 @@ footer a:hover {
     }
 }
 
-/* Clases de animación para el hero */
-.hero-title {
-    animation: fadeInDown 1.2s ease-out 0.3s both;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
-.hero-subtitle {
-    animation: fadeInScale 1.2s ease-out 0.8s both;
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Large Desktop (1200px+) */
+@media (min-width: 1200px) {
+    .team-image,
+    .video-container {
+        height: 320px;
+    }
 }
 
-.hero-button {
-    animation: slideInFromBottom 1.2s ease-out 1.3s both;
-}
-
-/* Media queries */
-@media (max-width: 1200px) {
-    #hero .hero-title {
+/* Desktop (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .hero-title {
         font-size: 3.5rem;
     }
     
-    #hero .hero-subtitle {
+    .hero-subtitle {
         font-size: 1.3rem;
     }
 }
 
-@media (max-width: 992px) {
-    section {
-        padding: 60px 0;
+/* Tablet (768px - 991px) */
+@media (max-width: 991px) {
+    :root {
+        --section-padding: 60px;
     }
     
     #hero {
@@ -514,60 +432,73 @@ footer a:hover {
         background-attachment: scroll;
     }
     
-    #hero .hero-title {
+    .hero-title {
         font-size: 3rem;
     }
     
-    #hero .hero-subtitle {
+    .hero-subtitle {
         font-size: 1.2rem;
         margin-bottom: 2rem;
     }
     
-    #hero .hero-button {
+    .hero-button {
         padding: 0.9rem 2rem;
         font-size: 1rem;
     }
 
-    /* Ajustar altura del equipo en tablets */
-    .team-media,
+    .team-image,
     .video-container {
-        height: 250px;
+        height: 280px;
+    }
+    
+    #nosotros .container {
+        padding: 2rem;
     }
 }
 
-@media (max-width: 768px) {
-    section {
-        padding: 50px 0;
+/* Mobile Large (576px - 767px) */
+@media (max-width: 767px) {
+    :root {
+        --section-padding: 50px;
+        --card-padding: 1.5rem;
     }
     
     #hero {
         min-height: 85vh;
-        background-attachment: scroll;
     }
     
-    #hero .hero-title {
+    .hero-title {
         font-size: 2.5rem;
         margin-bottom: 1rem;
     }
     
-    #hero .hero-subtitle {
+    .hero-subtitle {
         font-size: 1.1rem;
         margin-bottom: 1.5rem;
         padding: 0 1rem;
     }
     
-    #hero .hero-button {
+    .hero-button {
         padding: 0.8rem 1.8rem;
         font-size: 0.95rem;
     }
     
-    /* Ajustar altura del equipo en móviles */
-    .team-media,
+    .team-image,
     .video-container {
-        height: 200px;
+        height: 250px;
     }
     
-    /* Ajustar animaciones en móvil */
+    /* Desactivar efectos hover en móviles */
+    .team-video:hover {
+        transform: translateX(-50%);
+        box-shadow: none;
+    }
+    
+    .card:hover {
+        transform: none;
+    }
+    
+    /* Animaciones más rápidas en móvil */
     .hero-title {
         animation-duration: 1s;
         animation-delay: 0.2s;
@@ -584,109 +515,127 @@ footer a:hover {
     }
 }
 
-@media (max-width: 576px) {
+/* Mobile Small (320px - 575px) */
+@media (max-width: 575px) {
     #hero {
         min-height: 80vh;
     }
     
-    #hero .hero-title {
+    .hero-title {
         font-size: 2rem;
         line-height: 1.2;
     }
     
-    #hero .hero-subtitle {
+    .hero-subtitle {
         font-size: 1rem;
         padding: 0 0.5rem;
     }
     
-    #hero .hero-button {
+    .hero-button {
         padding: 0.75rem 1.5rem;
         font-size: 0.9rem;
     }
 
-    /* Altura más pequeña para móviles pequeños */
-    .team-media,
+    .team-image,
     .video-container {
-        height: 180px;
+        height: 220px;
+    }
+    
+    #nosotros .container {
+        padding: 1.5rem;
+        margin: 0 1rem;
     }
 }
 
-/* Dispositivos muy pequeños */
-@media (max-width: 400px) {
-    #hero .hero-title {
+/* Mobile Extra Small (< 400px) */
+@media (max-width: 399px) {
+    .hero-title {
         font-size: 1.8rem;
     }
     
-    #hero .hero-subtitle {
+    .hero-subtitle {
         font-size: 0.95rem;
     }
 
-    .team-media,
+    .team-image,
     .video-container {
-        height: 160px;
+        height: 200px;
     }
 }
 
-/* Efecto hover para enlaces del menú */
-.navbar-nav .nav-link {
-    position: relative;
-    padding: 0.5rem 1rem;
+/* ========== ACCESIBILIDAD ========== */
+
+/* Respetar preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .team-video:hover,
+    .card:hover,
+    .btn:hover {
+        transform: none !important;
+    }
 }
 
-.navbar-nav .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: var(--primary-color);
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
+/* Foco visible para navegación por teclado */
+.video-container:focus-within,
+.card:focus-within,
+.btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
-.navbar-nav .nav-link:hover::after {
-    width: 80%;
+/* Alto contraste */
+@media (prefers-contrast: high) {
+    :root {
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+        --shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+    
+    .card {
+        border: 1px solid #ccc;
+    }
 }
 
-/* Estilos para el mapa */
-#map {
-    width: 100%;
-    border-radius: 0.5rem;
-    overflow: hidden;
+/* ========== OPTIMIZACIONES DE RENDIMIENTO ========== */
+
+/* Preparar elementos para animaciones */
+.team-video,
+.card,
+.btn {
+    will-change: transform;
 }
 
-/* Animación adicional CONTROLADA para elementos que aparecen al hacer scroll */
-.fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s ease;
+/* Optimizar rendering */
+.video-container,
+.team-video {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
-.fade-in.animated {
-    opacity: 1;
-    transform: translateY(0);
+/* ========== UTILIDADES ========== */
+.text-primary {
+    color: var(--primary-color) !important;
 }
 
-/* IMPORTANTE: Resetear cualquier transform problemático */
-* {
-    transform: none;
+.bg-primary {
+    background-color: var(--primary-color) !important;
 }
 
-/* Permitir solo transforms específicos */
-.card:hover,
-.btn:hover,
-.hero-button:hover,
-.fade-in.animated {
-    /* Estos elementos SÍ pueden tener transform */
+.shadow-sm {
+    box-shadow: var(--shadow-sm) !important;
 }
 
-/* Asegurar que los containers principales no tengan transforms */
-.container,
-.container-fluid,
-section,
-main,
-body,
-html {
-    transform: none !important;
+.shadow {
+    box-shadow: var(--shadow) !important;
+}
+
+.shadow-lg {
+    box-shadow: var(--shadow-lg) !important;
 }
